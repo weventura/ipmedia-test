@@ -1,0 +1,42 @@
+<div id="sidenav" class="c-sidenav" [ngStyle]="{'width': (opened$ | async) ? '450px' : '0'}">
+    <ng-container *ngIf="(loader$ | async); then loader; else content" ></ng-container>
+</div>
+
+<ng-template #loader>
+    <div class="c-sidenav__loader">
+        <app-loader></app-loader>
+    </div>
+</ng-template>
+
+<ng-template #content>
+    <ng-container *ngIf="data">
+        <div class="content">
+
+            <div class="content__circle">
+                <img class="content__circle--image" [src]="data.sprites.other.dream_world.front_default" alt="">
+            </div>
+    
+            <div class="content__information">
+                <span class="content__information--description"><strong>ID:</strong> {{ data.id }}</span>
+                <span class="content__information--description"><strong>Nome:</strong> {{ data.name | uppercase }}</span>
+                <span class="content__information--description"><strong>Altura:</strong> {{ data.height }}</span>
+                <span class="content__information--description"><strong>Peso:</strong> {{ data.weight }} Kg</span>
+            </div>
+    
+            <div class="stats">
+                <ng-container *ngIf="data?.stats!.length > 0">
+                    <ng-container *ngFor="let item of data?.stats">
+                        <div class="stats__item">
+                            <span class="stats__item--description">{{ onGetDescription(item.stat.name) }}:</span>
+                             <app-progress-bar [value]="item.base_stat"></app-progress-bar>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    
+        <div class="c-sidenav__footer">
+            <span class="c-sidenav__footer--close" (click)="onClose()">Fechar</span>
+        </div>
+    </ng-container>
+</ng-template>

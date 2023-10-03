@@ -1,0 +1,51 @@
+<section class="c-pokemon-type" [style.align-items]="loaderPokemonType ? 'center' : 'inherit'">
+    <div class="c-pokemon-type__navigation">
+        <span class="c-pokemon-type__navigation--back" (click)="onBack()">Voltar</span>
+    </div>
+
+    <ng-container *ngIf="loaderPokemonType; then loader; else content" ></ng-container>
+</section>
+
+<ng-template #loader>
+    <app-loader></app-loader>
+</ng-template>
+
+<ng-template #content>
+    <div class="c-pokemon-type__header">
+        <img class="c-pokemon-type__header--icon" [src]="onGetIcon(data.name)" alt="">
+
+        <div class="content">
+            <span class="content__item"><strong>ID:</strong> {{ data.id }}</span>
+            <span class="content__item"><strong>Type:</strong> {{ data.name | uppercase }}</span>
+            <span class="content__item"><strong>Pokemons:</strong> {{ data.pokemon.length }}</span>
+        </div>
+    </div>
+
+    <div class="c-pokemon-type__content">
+        <span class="c-pokemon-type__content--title">
+            Pokemons
+        </span>
+
+        <ul class="list">
+            <li class="list__item"
+                *ngFor="let item of data.pokemon | paginate: { itemsPerPage: 10, currentPage: currentIndex }"
+                (click)="onOpenSidenav(item)"
+            >
+                <img class="list__item--icon" src="../../../../assets/backgrounds/pokeball.png" alt="">
+                <span class="list__item--description">{{ item.pokemon.name }}</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="c-pokemon-type__pagination">
+        <pagination-controls
+            (pageChange)="currentIndex = $event"
+            [responsive]=true
+            previousLabel="Anterior"
+            nextLabel="próximo"
+        ></pagination-controls>
+    </div>
+</ng-template>
+
+<app-sidenav [loader$]="loaderPokemonInfo$" [data]="pokemonInfo" [opened$]="openedSidenav$"></app-sidenav>
+

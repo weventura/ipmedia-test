@@ -1,0 +1,31 @@
+<section class="c-dashboard">
+
+    <div class="c-dashboard__logo">
+        <img class="c-dashboard__logo--image" src="../../../../assets/backgrounds/pokemon.png">
+    </div>
+
+    <div class="c-dashboard__container">
+        <ng-container *ngIf="loaderTypes; then loader; else content" ></ng-container>
+    </div>
+    
+</section>
+
+<ng-template #loader>
+    <app-loader></app-loader>
+</ng-template>
+
+<ng-template #content>
+    <span class="c-dashboard__container--title">
+        Select type
+    </span>
+
+    <div class="c-dashboard__container--list">
+        <ng-container *ngFor="let type of pokemonTypesList">
+            <div class="card" (click)="onSelectType(type)">
+                <img class="card__logo" [src]="onGetBackground(type.name)" alt="">
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+
+
